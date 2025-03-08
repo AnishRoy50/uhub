@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Import for redirection
-import { signup } from "../api/auth"; 
+import { signup } from "../api/auth"; // Ensure correct import
 import Navbar from "../components/Navbar";
-import "../assets/signup.css"; // ✅ Keep the existing design
+import "../assets/signup.css"; // ✅ Import the CSS file
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -12,31 +11,18 @@ const Signup = () => {
   });
 
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // ✅ Hook for navigation
 
-  // ✅ Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ✅ Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
-
     try {
-      const response = await signup(formData);
-      console.log("Signup successful:", response.data); // ✅ Debugging
-
-      // ✅ Redirect to login after signup
-      navigate("/login"); 
+      await signup(formData);
+      alert("Signup successful!"); // ✅ Replace with better UI feedback
     } catch (error) {
-      console.error("Signup error:", error);
-      setError("Signup failed. Please try again.");
-    } finally {
-      setLoading(false);
+      setError("Signup failed");
     }
   };
 
@@ -77,8 +63,8 @@ const Signup = () => {
             required
             className="signup-input"
           />
-          <button type="submit" className="signup-button" disabled={loading}>
-            {loading ? "Signing up..." : "Sign Up"}
+          <button type="submit" className="signup-button">
+            Sign Up
           </button>
         </form>
 
